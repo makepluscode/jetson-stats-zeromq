@@ -1,0 +1,22 @@
+#!/usr/bin/python3
+
+import zmq
+import random
+import sys
+import time
+import io
+import json
+import datetime
+
+PORT = "3063"
+
+context = zmq.Context()
+socket = context.socket(zmq.SUB)
+socket.connect("tcp://localhost:3063")
+
+socket.setsockopt(zmq.SUBSCRIBE, b'sys')
+
+for _ in range(100):
+  _, payload = socket.recv_multipart()
+  data = json.load(io.BytesIO(payload))
+  print(data) 

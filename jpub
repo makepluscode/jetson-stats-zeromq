@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+import zmq
+import random
+import sys
+import time
+import json
+import datetime
+
+PORT = "3063"
+
+context = zmq.Context()
+socket = context.socket(zmq.PUB)
+socket.bind("tcp://*:%s" % PORT)
+
+# to filtering message on the client end
+COTEXT_ID = str('sys').encode()
+
+from jtop import jtop
+
+def json_default(value):
+    print (value)
+    print (type(value))
+    if isinstance(value, datetime.datetime):
+        print ("datetime.datetime")
+        return value.strftime("%Y/%m/%d %H:%M:%S")
+    if isinstance(value, datetime.time):
+        print ("datetime.time")
+        return value.strftime("%H:%M:%S")
+    if isinstance(value, datetime.timedelta):
+        print ("datetime.timedelta")
+        return str(value)
+    raise TypeError('not JSON serializable')
+
+if __name__ == "__main__":
+
+    with jtop() as jetson:        
+        while jetson.ok():
+            msg_json = json.dumps(jetson.stats, default=json_default).encode()
+            print(msg_json)
+            print(type(msg_json))
+            print(sys.getsizeof(msg_json))
+            socket.send_multipart([COTEXT_ID, msg_json])
+            time.sleep(1)
