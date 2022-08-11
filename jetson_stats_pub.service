@@ -1,0 +1,10 @@
+[Unit]
+Description=jetson_stats_pub service
+After=jetson_stats.service
+
+[Service]
+ExecStart=/usr/local/bin/jpub
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
