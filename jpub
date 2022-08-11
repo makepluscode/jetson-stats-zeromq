@@ -19,22 +19,17 @@ COTEXT_ID = str('sys').encode()
 from jtop import jtop
 
 def json_default(value):
-    print (value)
-    print (type(value))
     if isinstance(value, datetime.datetime):
-        print ("datetime.datetime")
         return value.strftime("%Y/%m/%d %H:%M:%S")
     if isinstance(value, datetime.time):
-        print ("datetime.time")
         return value.strftime("%H:%M:%S")
     if isinstance(value, datetime.timedelta):
-        print ("datetime.timedelta")
         return str(value)
     raise TypeError('not JSON serializable')
 
 if __name__ == "__main__":
 
-    with jtop() as jetson:        
+    with jtop() as jetson:
         while jetson.ok():
             msg_json = json.dumps(jetson.stats, default=json_default).encode()
             print(msg_json)
