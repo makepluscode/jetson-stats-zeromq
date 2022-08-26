@@ -10,6 +10,8 @@ $ sudo reboot
 ### Dependencies
 
 ```
+$ pip3 install --upgrade pip
+$ pip3 install packaging
 $ pip3 install zmq
 ```
 
