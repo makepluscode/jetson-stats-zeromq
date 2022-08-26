@@ -32,12 +32,16 @@ $ ./jsub
 
 ### Autostart
 
-sudo cp jpub /usr/local/bin/
-sudo chmod +x /usr/local/bin/jpub 
+```
+$ sudo cp jpub /usr/local/bin/
+$ sudo chmod +x /usr/local/bin/jpub 
 
-sudo vim /etc/systemd/system/jetson_stats_pub.service
-sudo systemctl enable jetson_stats_pub.service
-sudo systemctl start jetson_stats_pub.service
+$ sudo vim /etc/systemd/system/jetson_stats_pub.service
+$ sudo systemctl enable jetson_stats_pub.service
+$ sudo systemctl start jetson_stats_pub.service
+```
+
+### Autostart script
 
 ```
 [Unit]
@@ -47,6 +51,7 @@ After=jetson_stats.service
 [Service]
 ExecStart=/usr/local/bin/jpub
 Restart=on-failure
+Environment="PYTHONPATH=$PYTHONPATH:/home/nvidia/.local/lib/python3.6/site-packages"
 
 [Install]
 WantedBy=multi-user.target
